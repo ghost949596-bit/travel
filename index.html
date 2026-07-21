@@ -562,7 +562,7 @@ function renderSchedule(day) {
     if (item.link) {
       const isMap = item.link.includes('maps.google') || item.link.includes('google.com/maps');
       const btnIcon = isMap ? 'fa-map-location-dot' : 'fa-arrow-up-right-from-square';
-      const btnText = isMap ? '開啟 Google Maps' : '開啟外部連結 / 網站';
+      const btnText = isMap ? '開啟 Google Maps' : '開始Visit Japan Web ';
 
       linkBtnHTML = `
         <a href="${item.link}" target="_blank" class="inline-block mt-1 text-[11px] text-blue-600 font-bold underline">
