@@ -530,52 +530,62 @@
       renderSchedule(day);
     }
 
-    function renderSchedule(day) {
-      const container = document.getElementById('day-schedule-container');
-      const items = scheduleData[day] || [];
-      
-      container.innerHTML = items.map(item => {
-        let badgeStyle = "bg-amber-100 text-eevee-brown";
-        let icon = "fa-clock";
+function renderSchedule(day) {
+  const container = document.getElementById('day-schedule-container');
+  const items = scheduleData[day] || [];
+  
+  container.innerHTML = items.map(item => {
+    let badgeStyle = "bg-amber-100 text-eevee-brown";
+    let icon = "fa-clock";
 
-        if (item.type === 'pokemon') {
-          badgeStyle = "bg-red-500 text-white font-bold";
-          icon = "fa-dragon";
-        } else if (item.type === 'transport') {
-          badgeStyle = "bg-purple-100 text-purple-800";
-          icon = "fa-train";
-        } else if (item.type === 'food') {
-          badgeStyle = "bg-orange-100 text-orange-800";
-          icon = "fa-utensils";
-        } else if (item.type === 'flight') {
-          badgeStyle = "bg-blue-600 text-white font-bold";
-          icon = "fa-plane";
-        } else if (item.type === 'hotel') {
-          badgeStyle = "bg-emerald-100 text-emerald-800";
-          icon = "fa-hotel";
-        }
-
-        const formattedText = item.text.replace(/\n/g, '<br>');
-
-        return `
-          <div class="eevee-card p-3 flex gap-3 items-start relative ${item.highlight ? 'border-2 border-red-500 bg-red-50/40' : ''}">
-            <div class="flex-shrink-0">
-              <span class="text-xs ${badgeStyle} px-2 py-1 rounded-lg font-black flex items-center gap-1 shadow-sm">
-                <i class="fa-solid ${icon}"></i> ${item.time}
-              </span>
-            </div>
-            <div class="flex-1 text-xs leading-relaxed text-gray-800">
-              <p class="font-bold">${formattedText}</p>
-              ${item.link ? `
-                <a href="${item.link}" target="_blank" class="inline-block mt-1 text-[11px] text-blue-600 font-bold underline">
-                  <i class="fa-solid fa-map-location-dot"></i> 開啟 Google Maps
-                </a>
-              ` : ''}
-            </div>
-          </div>
-        `;
-      }).join('');
+    if (item.type === 'pokemon') {
+      badgeStyle = "bg-red-500 text-white font-bold";
+      icon = "fa-dragon";
+    } else if (item.type === 'transport') {
+      badgeStyle = "bg-purple-100 text-purple-800";
+      icon = "fa-train";
+    } else if (item.type === 'food') {
+      badgeStyle = "bg-orange-100 text-orange-800";
+      icon = "fa-utensils";
+    } else if (item.type === 'flight') {
+      badgeStyle = "bg-blue-600 text-white font-bold";
+      icon = "fa-plane";
+    } else if (item.type === 'hotel') {
+      badgeStyle = "bg-emerald-100 text-emerald-800";
+      icon = "fa-hotel";
     }
+
+    const formattedText = item.text.replace(/\n/g, '<br>');
+
+    // 判斷連結類型：若包含 maps.google 則顯示「開啟 Google Maps」，否則顯示「開啟外部連結」
+    let linkBtnHTML = '';
+    if (item.link) {
+      const isMap = item.link.includes('maps.google') || item.link.includes('google.com/maps');
+      const btnIcon = isMap ? 'fa-map-location-dot' : 'fa-arrow-up-right-from-square';
+      const btnText = isMap ? '開啟 Google Maps' : '開啟外部連結 / 網站';
+
+      linkBtnHTML = `
+        <a href="${item.link}" target="_blank" class="inline-block mt-1 text-[11px] text-blue-600 font-bold underline">
+          <i class="fa-solid ${btnIcon}"></i> ${btnText}
+        </a>
+      `;
+    }
+
+    return `
+      <div class="eevee-card p-3 flex gap-3 items-start relative ${item.highlight ? 'border-2 border-red-500 bg-red-50/40' : ''}">
+        <div class="flex-shrink-0">
+          <span class="text-xs ${badgeStyle} px-2 py-1 rounded-lg font-black flex items-center gap-1 shadow-sm">
+            <i class="fa-solid ${icon}"></i> ${item.time}
+          </span>
+        </div>
+        <div class="flex-1 text-xs leading-relaxed text-gray-800">
+          <p class="font-bold">${formattedText}</p>
+          ${linkBtnHTML}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
 
     // ==================== GUIDE 導覽渲染 ====================
     function renderGuides() {
