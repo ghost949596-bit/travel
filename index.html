@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="h-full bg-amber-50">
+<head>
+
+<!-- 隱藏 Safari 頂部網址列與底部工具列，呈現全螢幕 Web App 模式 -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+<!-- 設定狀態列的樣式（預設、黑色、或半透明） -->
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <link rel="apple-touch-icon" href="https://truth.bahamut.com.tw/s01/201604/f5e4de431fb786eab5ec5f6c7ac5e494.JPG" />
+  
+  <!-- 4. 設定在桌面上顯示的 App 名稱 -->
+  <meta name="apple-mobile-web-app-title" content="寶可夢之旅" />
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>東京寶可夢冒險之旅 2026</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts: Zen Maru Gothic (可愛圓潤日系風格) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            eevee: {
+              brown: '#8B5A2B',
+              lightbrown: '#C49A6C',
+              cream: '#FFF8DC',
+              fluff: '#F5E6C8',
+              dark: '#4A3525',
+              accent: '#E65100'
+            },
+            pokeball: {
+              red: '#EE1515',
+              dark: '#222224'
+            }
+          },
+          fontFamily: {
+            sans: ['"Zen Maru Gothic"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    /* 自訂動態與滾動細節 */
+    body {
+      touch-action: manipulation;
+      font-family: 'Zen Maru Gothic', sans-serif;
+    }
+    .pb-safe {
+      padding-bottom: env(safe-area-inset-bottom, 4rem);
+    }
+    .eevee-card {
+      background: #FFFFFF;
+      border: 3px solid #C49A6C;
+      border-radius: 1.25rem;
+      box-shadow: 0 4px 0px #8B5A2B;
+    }
+    .pokeball-btn {
+      background: linear-gradient(180deg, #EE1515 50%, #FFFFFF 50%);
+      border: 3px solid #222224;
+    }
+    /* 隱藏滾動條但保持功能 */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="h-full flex flex-col text-eevee-dark antialiased bg-amber-50 selection:bg-amber-200">
+
+  <!-- 頂部 Header -->
+  <header class="sticky top-0 z-40 bg-eevee-brown text-white shadow-md border-b-4 border-eevee-dark px-4 py-3 flex justify-between items-center">
+    <div class="flex items-center space-x-2">
+      <!-- Pokeball Icon -->
+      <div class="w-8 h-8 rounded-full border-2 border-white bg-gradient-to-b from-red-600 via-red-600 to-white flex items-center justify-center relative overflow-hidden shadow">
+        <div class="w-full h-1 bg-black absolute top-1/2 -translate-y-1/2"></div>
+        <div class="w-3 h-3 bg-white border-2 border-black rounded-full z-10"></div>
+      </div>
+      <div>
+        <h1 class="font-black text-lg leading-none tracking-wide text-amber-100">東京寶可夢冒險</h1>
+        <p class="text-xs text-amber-200 font-medium">Eevee Edition • 9/3 - 9/8</p>
+      </div>
+    </div>
+    <div class="bg-eevee-lightbrown/40 border border-amber-200/50 rounded-full px-3 py-1 text-xs font-bold flex items-center gap-1">
+      <i class="fa-solid fa-plane text-amber-200"></i> JX800 / JX805
+    </div>
+  </header>
+
+  <!-- 主內容區域 (可滾動) -->
+  <main id="app-content" class="flex-1 overflow-y-auto p-4 pb-24 max-w-md mx-auto w-full space-y-4">
+
+    <!-- ==================== 1. PLAN (行程表) ==================== -->
+    <section id="tab-plan" class="tab-content space-y-4">
+      
+      <!-- 航班與住宿摘要卡片 -->
+      <div class="eevee-card p-4 bg-gradient-to-br from-amber-50 to-orange-50">
+        <div class="flex justify-between items-center mb-2 border-b-2 border-dashed border-eevee-lightbrown pb-2">
+          <span class="font-black text-eevee-brown"><i class="fa-solid fa-plane-departure mr-1"></i> 航班預訂</span>
+          <span class="text-xs bg-orange-100 text-orange-800 font-bold px-2 py-0.5 rounded-full">星宇航空</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2 text-xs mb-3">
+          <div class="bg-white/80 p-2 rounded-lg border border-amber-200">
+            <p class="font-bold text-eevee-brown">去程 JX800</p>
+            <p>08:30 TPE ➔ 12:55 NRT</p>
+          </div>
+          <div class="bg-white/80 p-2 rounded-lg border border-amber-200">
+            <p class="font-bold text-eevee-brown">回程 JX805</p>
+            <p>20:40 NRT ➔ 23:20 TPE</p>
+          </div>
+        </div>
+        
+        <div class="flex justify-between items-center mb-1">
+          <span class="font-black text-eevee-brown text-xs"><i class="fa-solid fa-hotel mr-1"></i> 住宿飯店</span>
+        </div>
+        <div class="text-xs space-y-1">
+          <div class="flex justify-between items-center bg-white/80 p-1.5 rounded border border-amber-200">
+            <span>D1-D4: 新宿華盛頓酒店</span>
+            <a href="https://maps.google.com/?q=Shinjuku+Washington+Hotel" target="_blank" class="text-blue-600 underline font-bold"><i class="fa-solid fa-map-location-dot"></i> 地圖</a>
+          </div>
+          <div class="flex justify-between items-center bg-white/80 p-1.5 rounded border border-amber-200">
+            <span>D5: 幕張春天酒店</span>
+            <a href="https://maps.google.com/?q=Hotel+Springs+Makuhari" target="_blank" class="text-blue-600 underline font-bold"><i class="fa-solid fa-map-location-dot"></i> 地圖</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 天數選擇器 (可橫向滑動) -->
+      <div class="flex space-x-2 overflow-x-auto no-scrollbar py-1">
+        <button onclick="switchDay(1)" id="day-btn-1" class="day-btn flex-shrink-0 px-4 py-2 rounded-xl border-2 border-eevee-brown font-black text-sm bg-eevee-brown text-white shadow">Day 1 (9/3) 前往東京</button>
+        <button onclick="switchDay(2)" id="day-btn-2" class="day-btn flex-shrink-0 px-4 py-2 rounded-xl border-2 border-eevee-brown font-black text-sm bg-white text-eevee-dark">Day 2 (9/4)  晴空塔</button>
+        <button onclick="switchDay(3)" id="day-btn-3" class="day-btn flex-shrink-0 px-4 py-2 rounded-xl border-2 border-eevee-brown font-black text-sm bg-white text-eevee-dark">Day 3 (9/5)  寶可夢樂園</button>
+        <button onclick="switchDay(4)" id="day-btn-4" class="day-btn flex-shrink-0 px-4 py-2 rounded-xl border-2 border-eevee-brown font-black text-sm bg-white text-eevee-dark">Day 4 (9/6) 明治神宮</button>
+        <button onclick="switchDay(5)" id="day-btn-5" class="day-btn flex-shrink-0 px-4 py-2 rounded-xl border-2 border-eevee-brown font-black text-sm bg-white text-eevee-dark">Day 5 (9/7)  東京市區</button>
+        <button onclick="switchDay(6)" id="day-btn-6" class="day-btn flex-shrink-0 px-4 py-2 rounded-xl border-2 border-eevee-brown font-black text-sm bg-white text-eevee-dark">Day 6 (9/8)  賦歸</button>
+      </div>
+
+      <!-- 行程內容區塊 -->
+      <div id="day-schedule-container" class="space-y-3">
+        <!-- JS 動態渲染行程內容 -->
+      </div>
+    </section>
+
+    <!-- ==================== 2. GUIDE (深度導覽) ==================== -->
+    <section id="tab-guide" class="tab-content hidden space-y-4">
+      <div class="flex items-center space-x-2 mb-2">
+        <div class="w-3 h-6 bg-eevee-brown rounded-full"></div>
+        <h2 class="text-xl font-black text-eevee-dark">重點景點與寶可夢據點導覽</h2>
+      </div>
+
+      <div class="space-y-4" id="guide-list">
+        <!-- JS 動態插入導覽內容 -->
+      </div>
+    </section>
+
+    <!-- ==================== 3. WALLET (記帳與匯率) ==================== -->
+    <section id="tab-wallet" class="tab-content hidden space-y-4">
+      
+      <!-- 匯率計算機 -->
+      <div class="eevee-card p-4 bg-amber-100/50">
+        <div class="flex justify-between items-center mb-2">
+          <h3 class="font-black text-eevee-brown flex items-center gap-1">
+            <i class="fa-solid fa-calculator"></i> 匯率計算機
+          </h3>
+          <div class="flex items-center text-xs font-bold gap-1 bg-white px-2 py-1 rounded-md border border-amber-300">
+            <span>1 JPY =</span>
+            <input type="number" id="exchange-rate" value="0.215" step="0.001" onchange="updateRate()" class="w-14 text-center border-b border-eevee-brown focus:outline-none font-bold text-eevee-accent">
+            <span>TWD</span>
+          </div>
+        </div>
+
+        <!-- 計算機螢幕 -->
+        <div class="bg-white p-3 rounded-xl border-2 border-eevee-lightbrown mb-3 text-right">
+          <div id="calc-expr" class="text-xs text-gray-500 h-4 overflow-hidden">0</div>
+          <div id="calc-display" class="text-2xl font-black text-eevee-dark tracking-wide">0</div>
+          <div id="calc-twd" class="text-xs font-bold text-eevee-accent mt-0.5">≈ NT$ 0</div>
+        </div>
+
+        <!-- 按鈕區 -->
+        <div class="grid grid-cols-4 gap-2 text-sm font-black">
+          <button onclick="calcInput('C')" class="p-3 bg-red-100 text-red-600 rounded-xl border border-red-300 active:scale-95">C</button>
+          <button onclick="calcInput('/')" class="p-3 bg-amber-200 text-eevee-brown rounded-xl border border-amber-300 active:scale-95">÷</button>
+          <button onclick="calcInput('*')" class="p-3 bg-amber-200 text-eevee-brown rounded-xl border border-amber-300 active:scale-95">×</button>
+          <button onclick="calcInput('-')" class="p-3 bg-amber-200 text-eevee-brown rounded-xl border border-amber-300 active:scale-95">-</button>
+          
+          <button onclick="calcInput('7')" class="p-3 bg-white rounded-xl border border-amber-200 shadow-sm active:scale-95">7</button>
+          <button onclick="calcInput('8')" class="p-3 bg-white rounded-xl border border-amber-200 shadow-sm active:scale-95">8</button>
+          <button onclick="calcInput('9')" class="p-3 bg-white rounded-xl border border-amber-200 shadow-sm active:scale-95">9</button>
+          <button onclick="calcInput('+')" class="p-3 bg-amber-200 text-eevee-brown rounded-xl border border-amber-300 active:scale-95">+</button>
+          
+          <button onclick="calcInput('4')" class="p-3 bg-white rounded-xl border border-amber-200 shadow-sm active:scale-95">4</button>
+          <button onclick="calcInput('5')" class="p-3 bg-white rounded-xl border border-amber-200 shadow-sm active:scale-95">5</button>
+          <button onclick="calcInput('6')" class="p-3 bg-white rounded-xl border border-amber-200 shadow-sm active:scale-95">6</button>
+          <button onclick="calcEqual()" class="row-span-2 bg-eevee-brown text-white rounded-xl border border-eevee-dark shadow active:scale-95 flex items-center justify-center text-xl">=</button>
+          
+          <button onclick="calcInput('1')" class="p-3 bg-white rounded-xl border border-amber-200 shadow-sm active:scale-95">1</button>
+          <button onclick="calcInput('2')" class="p-3 bg-white rounded-xl border border-amber-200 shadow-sm active:scale-95">2</button>
+          <button onclick="calcInput('3')" class="p-3 bg-white rounded-xl border border-amber-200 shadow-sm active:scale-95">3</button>
+          
+          <button onclick="calcInput('0')" class="col-span-2 p-3 bg-white rounded-xl border border-amber-200 shadow-sm active:scale-95">0</button>
+          <button onclick="calcInput('.')" class="p-3 bg-white rounded-xl border border-amber-200 shadow-sm active:scale-95">.</button>
+        </div>
+      </div>
+
+      <!-- 新增記帳表單 -->
+      <div class="eevee-card p-4 space-y-3">
+        <h3 class="font-black text-eevee-brown flex items-center gap-1 text-sm">
+          <i class="fa-solid fa-pen-to-square"></i> 新增消費記帳
+        </h3>
+        <div class="grid grid-cols-2 gap-2">
+          <input type="text" id="expense-title" placeholder="品項名稱 (如: 寶可夢公仔)" class="p-2 text-xs rounded-lg border border-amber-300 focus:outline-none focus:ring-2 focus:ring-eevee-brown">
+          <input type="number" id="expense-amount" placeholder="日幣金額 (JPY)" class="p-2 text-xs rounded-lg border border-amber-300 focus:outline-none focus:ring-2 focus:ring-eevee-brown">
+        </div>
+        <div class="flex items-center gap-2">
+          <label class="flex-1 bg-amber-50 border border-dashed border-eevee-lightbrown rounded-lg p-2 text-center text-xs text-eevee-brown font-bold cursor-pointer hover:bg-amber-100">
+            <i class="fa-solid fa-camera mr-1"></i> <span id="photo-label">上傳收據/照片</span>
+            <input type="file" id="expense-photo" accept="image/*" class="hidden" onchange="handlePhotoUpload(this)">
+          </label>
+          <button onclick="addExpense()" class="bg-eevee-brown text-white font-bold text-xs px-4 py-2.5 rounded-lg border border-eevee-dark shadow active:scale-95">
+            新增記錄
+          </button>
+        </div>
+      </div>
+
+      <!-- 歷史記帳列表 -->
+      <div class="eevee-card p-4 space-y-3">
+        <div class="flex justify-between items-center border-b pb-2 border-amber-200">
+          <h3 class="font-black text-eevee-brown text-sm"><i class="fa-solid fa-receipt"></i> 消費明細列表</h3>
+          <span id="total-expense" class="text-xs font-black text-eevee-accent">總計: ¥0 (NT$ 0)</span>
+        </div>
+        <div id="expense-list" class="space-y-2 max-h-60 overflow-y-auto pr-1">
+          <!-- JS 動態生成歷史記帳列表 -->
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ==================== 4. LISTS (清單) ==================== -->
+    <section id="tab-lists" class="tab-content hidden space-y-4">
+      
+      <!-- 行前準備 CheckList -->
+      <div class="eevee-card p-4 space-y-3">
+        <h3 class="font-black text-eevee-brown flex items-center gap-1 text-sm border-b pb-2 border-amber-200">
+          <i class="fa-solid fa-list-check"></i> 行前必備物品清單
+        </h3>
+        <div id="checklist-container" class="space-y-2 text-xs">
+          <!-- JS 動態生成勾選清單 -->
+        </div>
+      </div>
+
+      <!-- 個人備忘錄 -->
+      <div class="eevee-card p-4 space-y-3">
+        <h3 class="font-black text-eevee-brown flex items-center gap-1 text-sm">
+          <i class="fa-solid fa-note-sticky"></i> 個人備忘錄 / 連結
+        </h3>
+        <div class="flex gap-2">
+          <input type="text" id="memo-input" placeholder="輸入備忘事項或網址..." class="flex-1 p-2 text-xs rounded-lg border border-amber-300 focus:outline-none">
+          <button onclick="addMemo()" class="bg-eevee-brown text-white font-bold text-xs px-3 py-2 rounded-lg border border-eevee-dark active:scale-95">新增</button>
+        </div>
+        <div id="memo-container" class="space-y-2 max-h-48 overflow-y-auto">
+          <!-- JS 動態生成備忘項目 -->
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ==================== 5. INFO (資訊) ==================== -->
+    <section id="tab-info" class="tab-content hidden space-y-4">
+      
+      <!-- 天氣預報捷徑 -->
+      <div class="eevee-card p-4 bg-blue-50/60 border-blue-200">
+        <h3 class="font-black text-blue-900 flex items-center gap-1 text-sm mb-2">
+          <i class="fa-solid fa-cloud-sun"></i> 日本當地氣象資訊
+        </h3>
+        <p class="text-xs text-blue-800 mb-3">查看東京與千葉地區的最新天氣預報與氣溫趨勢。</p>
+        <a href="https://www.jma.go.jp/bosai/forecast/" target="_blank" class="inline-block bg-blue-600 text-white font-bold text-xs px-4 py-2 rounded-lg shadow border border-blue-800">
+          <i class="fa-solid fa-arrow-up-right-from-square mr-1"></i> 前往日本氣象廳 (JMA)
+        </a>
+      </div>
+
+      <!-- 緊急聯絡資訊 -->
+      <div class="eevee-card p-4 space-y-2">
+        <h3 class="font-black text-red-600 flex items-center gap-1 text-sm border-b pb-2 border-amber-200">
+          <i class="fa-solid fa-triangle-exclamation"></i> 緊急聯絡電話 (日本)
+        </h3>
+        <div class="text-xs space-y-2">
+          <div class="flex justify-between items-center p-2 bg-red-50 rounded border border-red-100">
+            <span class="font-bold text-gray-700">警察局 (報案)</span>
+            <a href="tel:110" class="font-black text-red-600 bg-white px-2 py-1 rounded border border-red-300">110</a>
+          </div>
+          <div class="flex justify-between items-center p-2 bg-red-50 rounded border border-red-100">
+            <span class="font-bold text-gray-700">火警 / 救護車</span>
+            <a href="tel:119" class="font-black text-red-600 bg-white px-2 py-1 rounded border border-red-300">119</a>
+          </div>
+          <div class="p-2 bg-amber-50 rounded border border-amber-200">
+            <p class="font-bold text-eevee-brown">台北駐日經濟文化代表處</p>
+            <p class="text-[11px] text-gray-600">緊急聯絡電話：+81-3-3280-7111</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 旅遊注意事項 -->
+      <div class="eevee-card p-4 space-y-2">
+        <h3 class="font-black text-eevee-brown flex items-center gap-1 text-sm border-b pb-2 border-amber-200">
+          <i class="fa-solid fa-shield-cat"></i> 日本旅遊注意事項與禁忌
+        </h3>
+        <ul class="text-xs text-gray-700 space-y-1.5 list-disc pl-4">
+          <li><strong>肉類製品管制：</strong>嚴禁攜帶含肉類、海鮮成分之食品入境日本或返台。</li>
+          <li><strong>電車禮儀：</strong>車廂內請保持安靜，手機切換為靜音模式，避免講電話。</li>
+          <li><strong>垃圾分類：</strong>日本街頭垃圾桶較少，建議隨身攜帶小垃圾袋回飯店分類。</li>
+          <li><strong>免稅規定：</strong>購買免稅商品需隨身攜帶護照，且消費性商品在離開日本前不可拆封。</li>
+        </ul>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- 底部導覽列 (Fixed Navigation) -->
+  <nav class="fixed bottom-0 left-0 right-0 z-50 bg-white border-t-4 border-eevee-brown shadow-lg max-w-md mx-auto">
+    <div class="grid grid-cols-5 h-16">
+      <button onclick="switchTab('plan')" id="nav-plan" class="nav-btn flex flex-col items-center justify-center text-eevee-brown font-black">
+        <i class="fa-solid fa-map-location-dot text-lg"></i>
+        <span class="text-[10px] mt-0.5">行程</span>
+      </button>
+      <button onclick="switchTab('guide')" id="nav-guide" class="nav-btn flex flex-col items-center justify-center text-gray-400 font-bold">
+        <i class="fa-solid fa-book-open text-lg"></i>
+        <span class="text-[10px] mt-0.5">導覽</span>
+      </button>
+      <button onclick="switchTab('wallet')" id="nav-wallet" class="nav-btn flex flex-col items-center justify-center text-gray-400 font-bold">
+        <i class="fa-solid fa-wallet text-lg"></i>
+        <span class="text-[10px] mt-0.5">記帳</span>
+      </button>
+      <button onclick="switchTab('lists')" id="nav-lists" class="nav-btn flex flex-col items-center justify-center text-gray-400 font-bold">
+        <i class="fa-solid fa-clipboard-check text-lg"></i>
+        <span class="text-[10px] mt-0.5">清單</span>
+      </button>
+      <button onclick="switchTab('info')" id="nav-info" class="nav-btn flex flex-col items-center justify-center text-gray-400 font-bold">
+        <i class="fa-solid fa-circle-info text-lg"></i>
+        <span class="text-[10px] mt-0.5">資訊</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- JavaScript 邏輯程式碼 -->
+  <script>
+    // ==================== 1. 行程資料 (含搭乘細節) ====================
+    const scheduleData = {
+      1: [
+        { time: "08:30", text: "星宇航空 JX800 班機起飛 (TPE)", type: "flight", highlight: true },
+        { time: "在機上", text: "填寫入境申請單 (Visit Japan Web)", link: "https://services.digital.go.jp/zh-cmn-hant/visit-japan-web/", type: "task" },
+        { time: "12:55", text: "抵達成田國際機場 (第二航廈)", type: "spot" },
+        { time: "14:43", text: "搭乘 Skyliner 抵達日暮里站", type: "transport" },
+        { time: "15:21", text: "換乘 JR 山手線 (普通: 日暮里站 ➔ 新宿站，約25分鐘 10站)", type: "transport" },
+        { time: "16:00", text: "新宿華盛頓酒店 Check-in & 放置行李", type: "hotel", link: "https://maps.google.com/?q=Shinjuku+Washington+Hotel" },
+        { time: "17:00", text: "出發至澀谷：搭乘 JR 山手線 (普通 往品川/澀谷) 至澀谷車站 (3站)", type: "transport" },
+        { time: "17:30", text: "SHIBUYA SKY 展望台 (須提前兩周預約)", type: "spot", link: "https://maps.google.com/?q=SHIBUYA+SKY" },
+        { time: "19:00", text: "寶可夢中心 澀谷店 (Pokémon Center Shibuya)", type: "pokemon", link: "https://maps.google.com/?q=Pokemon+Center+Shibuya" },
+        { time: "20:30", text: "晚餐：つるとんたん (TsuruTonTan) 澀谷店 烏龍麵", type: "food", link: "https://maps.google.com/?q=TsuruTonTan+Shibuya" },
+        { time: "22:00", text: "逛唐吉訶德 (澀谷店)", type: "spot" }
+      ],
+      2: [
+        { time: "07:00", text: "早餐時間", type: "food" },
+        { time: "09:00", text: "出發前往淺草寺 (預計50分鐘)：\n• 搭乘都營大江戶線(E紅色) 都廳前站 ➔ 藏前站 (12站)\n• 走路至藏前站 (約2分鐘)\n• 轉乘都營淺草線(A粉紅) 藏前站 ➔ 淺草站 (1站)", type: "transport" },
+        { time: "12:00", text: "東京淺草文化觀光中心 8樓觀景台 (遠眺晴空塔)", type: "spot", link: "https://maps.google.com/?q=Asakusa+Culture+Tourist+Information+Center" },
+        { time: "13:00", text: "午餐：叙叙苑 燒肉 (預計車程15分鐘)：\n• 搭乘都營淺草線(A橘色) 淺草站 ➔ 押上站 (2站)", type: "food", link: "https://maps.google.com/?q=Jojoen+Tokyo+Skytree" },
+        { time: "15:00", text: "晴空塔 + 晴空塔寶可夢中心 (4樓)", type: "pokemon", link: "https://maps.google.com/?q=Pokemon+Center+Skytree" },
+        { time: "17:00", text: "前往秋葉原 (預計30分鐘)：\n• 搭乘都營淺草線(A粉紅) 押上站 ➔ 淺草站 (2站)\n• 轉乘銀座線(G黃色) 淺草站 ➔ 末廣町站 (5站)", type: "transport" },
+        { time: "19:00", text: "晚餐：牛かつ壱弐参 (炸牛排) 或 豚骨拉麵 博多風龍", type: "food", link: "https://maps.google.com/?q=Gyukatsu+Ichi+Ni+San" },
+        { time: "20:30", text: "返回新宿 (預計35分鐘)：\n• 搭乘銀座線(G黃色) 末廣町站 ➔ 上野廣小路站 (1站)\n• 轉乘都營大江戶線(E紅色) 上野御徒町站 ➔ 都廳前站 (9站)", type: "transport" }
+      ],
+      3: [
+        { time: "09:00", text: "出門前往京王讀賣樂園", type: "spot" },
+        { time: "09:15", text: "新宿站出發 (預計1小時)：\n• 搭乘京王線本線(KO紫色) 新宿站 (往橋本4號月台) ➔ 京王讀賣樂園站 (12站)\n• 步行至京王口站轉搭空中纜車（Sky Shuttle，單程500日圓，約10分鐘）", type: "transport", highlight: true },
+        { time: "12:00", text: "Pokémon Park Kanto (11:45 須先使用 APP 搶整理券「親親小屋」)", type: "pokemon", highlight: true },
+        { time: "17:30", text: "表演觀賞：皮卡皮卡電光閃閃！ (表演時間約25分鐘)", type: "pokemon" },
+        { time: "19:30", text: "表演觀賞：皮卡布夏日嘉年華！ (每場約15分鐘)", type: "pokemon" },
+        { time: "20:00", text: "離開樂園，準備返程", type: "spot" },
+        { time: "20:18", text: "搭乘空中纜車返回車站", type: "transport" },
+        { time: "21:13", text: "搭乘京王線本線(KO紫色) 京王讀賣樂園站 ➔ 新宿站 (12站，預計35分鐘)", type: "transport" }
+      ],
+      4: [
+        { time: "08:00", text: "飯店早餐", type: "food" },
+        { time: "09:00", text: "出門散步", type: "spot" },
+        { time: "09:30", text: "走路至明治神宮 (路程約20分鐘)", type: "spot", link: "https://maps.google.com/?q=Meiji+Jingu" },
+        { time: "11:30", text: "前往竹下通 / 表參道 / 原宿車站商圈", type: "spot" },
+        { time: "13:00", text: "前往池袋 (預計25分鐘)：\n• 搭乘 JR 山手線(JY綠色) 原宿站 ➔ 池袋站 (6站)\n• 逛 Sunshine City、寶可夢中心 Mega Tokyo、東武與西武百貨、藥妝店", type: "pokemon", link: "https://maps.google.com/?q=Sunshine+City+Ikebukuro" },
+        { time: "17:00", text: "晚餐：Mo-Mo-Paradise 壽喜燒 (陽光60通店)", type: "food", link: "https://maps.google.com/?q=Mo-Mo-Paradise+Ikebukuro" },
+        { time: "21:00", text: "新宿東京都廳「TOKYO Night & Light」寶可夢光雕秀", type: "pokemon", highlight: true, link: "https://maps.google.com/?q=Tokyo+Metropolitan+Government+Building" }
+      ],
+      5: [
+        { time: "08:00", text: "飯店早餐 & 辦理退房辦理", type: "food" },
+        { time: "09:30", text: "搭車至東京車站 (預計14分鐘)：\n• 搭乘 JR 中央線快速(JC橘色) 新宿站 ➔ 東京車站 (4站)\n• 於東京車站寄放行李", type: "transport" },
+        { time: "10:30", text: "參拜小網神社 (強運強財運)：\n• 寄完行李後跟著指標走「丸之內北口」方向往地下走\n• 認準東西線(T藍綠色)指標，搭乘東西線 大手町站 ➔ 茅場町站 (2站)\n• 走路約10分鐘抵達小網神社", type: "spot", link: "https://maps.google.com/?q=Koami+Shrine" },
+        { time: "11:30", text: "午餐：黑毛和牛壽喜燒 日本橋一里 (走路約10分鐘)", type: "food", link: "https://maps.google.com/?q=Nihonbashi+Ichiri" },
+        { time: "13:30", text: "逛寶可夢中心 DX (Pokémon Center DX & Cafe) (走路約15分鐘)", type: "pokemon", link: "https://maps.google.com/?q=Pokemon+Center+DX" },
+        { time: "16:00", text: "領取行李，前往海濱幕張 (預計40分鐘)：\n• 搭乘 JR 京葉線(JE紅色) 東京車站 ➔ 海濱幕張站 (13站)\n• 入住幕張春天酒店 (Hotel Springs Makuhari)", type: "hotel", link: "https://maps.google.com/?q=Hotel+Springs+Makuhari" }
+      ],
+      6: [
+        { time: "09:00", text: "飯店早餐", type: "food" },
+        { time: "10:00", text: "逛三井 Outlet Park 幕張 (Makuhari Outlet)", type: "spot", link: "https://maps.google.com/?q=Mitsui+Outlet+Park+Makuhari" },
+        { time: "16:23", text: "出發成田國際機場第二航廈 (預計45分鐘)：\n• 搭乘機場接駁巴士 (費用 1200 日圓)", type: "transport", highlight: true },
+        { time: "17:05", text: "抵達成田機場第二航廈，辦理登機與報到", type: "spot" },
+        { time: "20:40", text: "星宇航空 JX805 班機起飛 (NRT)", type: "flight", highlight: true },
+        { time: "23:20", text: "順利抵達桃園國際機場 (TPE)，結束愉快旅程！", type: "flight" }
+      ]
+    };
+
+    // ==================== 2. 導覽資料 (GUIDE) ====================
+    const guideData = [
+      {
+        title: "淺草寺 (Asakusa Temple)",
+        desc: "東京都內最古老的寺廟，建於628年。象徵標誌「雷門」掛著重達700公斤的大紅燈籠。穿過仲見世通商店街可品嚐人形燒與仙貝。",
+        mapUrl: "https://www.openstreetmap.org/export/embed.html?bbox=139.7946%2C35.7127%2C139.7986%2C35.7167&layer=mapnik"
+      },
+      {
+        title: "東京晴空塔 & 寶可夢中心晴空塔店",
+        desc: "高達634公尺，為世界第一高自立式電波塔。4樓的寶可夢中心以「烈空坐」為代表地標主題，許多限定周邊在此販售。",
+        mapUrl: "https://www.openstreetmap.org/export/embed.html?bbox=139.8087%2C35.7081%2C139.8127%2C35.7121&layer=mapnik"
+      },
+      {
+        title: "秋葉原 (Akihabara)",
+        desc: "全球知名的動漫與電子產品聖地！數百間店鋪聚集了扭蛋、公仔、懷舊電玩與女僕咖啡廳，是二次元文化愛好者的天堂。",
+        mapUrl: "https://www.openstreetmap.org/export/embed.html?bbox=139.7702%2C35.6966%2C139.7742%2C35.7006&layer=mapnik"
+      },
+      {
+        title: "寶可夢樂園 (Pokémon Park Kanto)",
+        desc: "位於京王讀賣樂園內的全新主題園區！重現關都地區氛圍，有各種寶可夢互動體驗、親親小屋與精彩夜間燈光嘉年華表演。",
+        mapUrl: "https://www.openstreetmap.org/export/embed.html?bbox=139.5147%2C35.6231%2C139.5187%2C35.6271&layer=mapnik"
+      },
+      {
+        title: "寶可夢中心 Mega Tokyo (池袋)",
+        desc: "位於池袋 Sunshine City，是日本規模最大的寶可夢中心之一！旁邊設有 Pokémon Card Station 與寶可夢甜點店 (Pikachu Sweets)。",
+        mapUrl: "https://www.openstreetmap.org/export/embed.html?bbox=139.7171%2C35.7269%2C139.7211%2C35.7309&layer=mapnik"
+      },
+      {
+        title: "寶可夢中心 DX & 咖啡廳 (日本橋)",
+        desc: "結合經典歷史與創新科技的旗艦店，入口有一隻超大卡比獸迎賓！設有需預約的 Pokémon Cafe，可品嚐精緻寶可夢造型餐點。",
+        mapUrl: "https://www.openstreetmap.org/export/embed.html?bbox=139.7712%2C35.6789%2C139.7752%2C35.6829&layer=mapnik"
+      },
+      {
+        title: "寶可夢中心 澀谷店 (Shibuya)",
+        desc: "位於 Shibuya PARCO 6樓，風格主打潮流與街頭塗鴉，店內坐落著一隻巨大、呈現休眠狀態的「超夢 (Mewtwo)」模型！",
+        mapUrl: "https://www.openstreetmap.org/export/embed.html?bbox=139.6968%2C35.6600%2C139.7008%2C35.6640&layer=mapnik"
+      },
+      {
+        title: "三井 Outlet Park 幕張",
+        desc: "距離 JR 海濱幕張站僅需步行1分鐘！聚集近百家日本國內外知名品牌、運動用品與服飾折價店，是離機場極近的購物好去處。",
+        mapUrl: "https://www.openstreetmap.org/export/embed.html?bbox=140.0385%2C35.6465%2C140.0425%2C35.6505&layer=mapnik"
+      }
+    ];
+
+    // ==================== 預設檢查清單 (CHECKLIST) ====================
+    const defaultChecklist = [
+      { text: "護照 (效期6個月以上)", checked: false },
+      { text: "Visit Japan Web 入境手續 QR Code", checked: false },
+      { text: "日幣現金與信用卡 (記得開通海外刷卡)", checked: false },
+      { text: "網卡 / eSIM / 漫遊服務啟用", checked: false },
+      { text: "行動電源 & 充電線", checked: false },
+      { text: "個人隨身藥品與透氣OK繃", checked: false },
+      { text: "休閒好走運動鞋 (每天破萬步)", checked: false },
+      { text: "環保購物袋 (日本購物塑膠袋需付費)", checked: false }
+    ];
+
+    // ==================== 全域狀態管理 ====================
+    let currentDay = 1;
+    let exchangeRate = 0.215;
+    let calcExpression = "";
+    let uploadedBase64Photo = "";
+
+    // ==================== 初始化邏輯 ====================
+    window.addEventListener('DOMContentLoaded', () => {
+      renderSchedule(1);
+      renderGuides();
+      initLists();
+      loadExpenses();
+      
+      // LocalStorage 讀取匯率
+      const savedRate = localStorage.getItem('eevee_exchange_rate');
+      if (savedRate) {
+        exchangeRate = parseFloat(savedRate);
+        document.getElementById('exchange-rate').value = exchangeRate;
+      }
+    });
+
+    // ==================== 頁籤切換 (TAB SWITCHING) ====================
+    function switchTab(tabName) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('text-eevee-brown', 'font-black');
+        btn.classList.add('text-gray-400', 'font-bold');
+      });
+
+      const activeBtn = document.getElementById(`nav-${tabName}`);
+      activeBtn.classList.remove('text-gray-400', 'font-bold');
+      activeBtn.classList.add('text-eevee-brown', 'font-black');
+      
+      // 滾動回頂部
+      document.getElementById('app-content').scrollTop = 0;
+    }
+
+    // ==================== PLAN 行程渲染 ====================
+    function switchDay(day) {
+      currentDay = day;
+      document.querySelectorAll('.day-btn').forEach((btn, idx) => {
+        if (idx + 1 === day) {
+          btn.classList.remove('bg-white', 'text-eevee-dark');
+          btn.classList.add('bg-eevee-brown', 'text-white', 'shadow');
+        } else {
+          btn.classList.remove('bg-eevee-brown', 'text-white', 'shadow');
+          btn.classList.add('bg-white', 'text-eevee-dark');
+        }
+      });
+      renderSchedule(day);
+    }
+
+function renderSchedule(day) {
+  const container = document.getElementById('day-schedule-container');
+  const items = scheduleData[day] || [];
+  
+  container.innerHTML = items.map(item => {
+    let badgeStyle = "bg-amber-100 text-eevee-brown";
+    let icon = "fa-clock";
+
+    if (item.type === 'pokemon') {
+      badgeStyle = "bg-red-500 text-white font-bold";
+      icon = "fa-dragon";
+    } else if (item.type === 'transport') {
+      badgeStyle = "bg-purple-100 text-purple-800";
+      icon = "fa-train";
+    } else if (item.type === 'food') {
+      badgeStyle = "bg-orange-100 text-orange-800";
+      icon = "fa-utensils";
+    } else if (item.type === 'flight') {
+      badgeStyle = "bg-blue-600 text-white font-bold";
+      icon = "fa-plane";
+    } else if (item.type === 'hotel') {
+      badgeStyle = "bg-emerald-100 text-emerald-800";
+      icon = "fa-hotel";
+    }
+
+    const formattedText = item.text.replace(/\n/g, '<br>');
+
+    // 判斷連結類型：若包含 maps.google 則顯示「開啟 Google Maps」，否則顯示「開啟外部連結」
+    let linkBtnHTML = '';
+    if (item.link) {
+      const isMap = item.link.includes('maps.google') || item.link.includes('google.com/maps');
+      const btnIcon = isMap ? 'fa-map-location-dot' : 'fa-arrow-up-right-from-square';
+      const btnText = isMap ? '開啟 Google Maps' : '開始Visit Japan Web ';
+
+      linkBtnHTML = `
+        <a href="${item.link}" target="_blank" class="inline-block mt-1 text-[11px] text-blue-600 font-bold underline">
+          <i class="fa-solid ${btnIcon}"></i> ${btnText}
+        </a>
+      `;
+    }
+
+    return `
+      <div class="eevee-card p-3 flex gap-3 items-start relative ${item.highlight ? 'border-2 border-red-500 bg-red-50/40' : ''}">
+        <div class="flex-shrink-0">
+          <span class="text-xs ${badgeStyle} px-2 py-1 rounded-lg font-black flex items-center gap-1 shadow-sm">
+            <i class="fa-solid ${icon}"></i> ${item.time}
+          </span>
+        </div>
+        <div class="flex-1 text-xs leading-relaxed text-gray-800">
+          <p class="font-bold">${formattedText}</p>
+          ${linkBtnHTML}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+    // ==================== GUIDE 導覽渲染 ====================
+    function renderGuides() {
+      const container = document.getElementById('guide-list');
+      container.innerHTML = guideData.map(g => `
+        <div class="eevee-card p-4 space-y-2">
+          <h3 class="font-black text-eevee-brown text-base flex items-center gap-1">
+            <i class="fa-solid fa-location-dot text-red-500"></i> ${g.title}
+          </h3>
+          <p class="text-xs text-gray-700 leading-relaxed">${g.desc}</p>
+          <div class="w-full h-40 rounded-xl overflow-hidden border border-amber-200 mt-2">
+            <iframe width="100%" height="100%" frameborder="0" scrolling="no" src="${g.mapUrl}"></iframe>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ==================== WALLET 記帳與計算機 ====================
+    function updateRate() {
+      const val = parseFloat(document.getElementById('exchange-rate').value);
+      if (val > 0) {
+        exchangeRate = val;
+        localStorage.setItem('eevee_exchange_rate', exchangeRate);
+        updateCalcTWD();
+        renderExpenses();
+      }
+    }
+
+    function calcInput(char) {
+      if (char === 'C') {
+        calcExpression = "";
+      } else {
+        calcExpression += char;
+      }
+      document.getElementById('calc-expr').innerText = calcExpression || "0";
+      try {
+        if (calcExpression) {
+          const evalRes = Function(`'use strict'; return (${calcExpression})`)();
+          document.getElementById('calc-display').innerText = evalRes;
+          updateCalcTWD(evalRes);
+        } else {
+          document.getElementById('calc-display').innerText = "0";
+          updateCalcTWD(0);
+        }
+      } catch (e) {
+        // 等待完整表達式輸入
+      }
+    }
+
+    function calcEqual() {
+      try {
+        const evalRes = Function(`'use strict'; return (${calcExpression})`)();
+        calcExpression = evalRes.toString();
+        document.getElementById('calc-expr').innerText = calcExpression;
+        document.getElementById('calc-display').innerText = calcExpression;
+        updateCalcTWD(evalRes);
+      } catch (e) {
+        alert("計算算式有誤！");
+      }
+    }
+
+    function updateCalcTWD(jpyValue) {
+      const jpy = jpyValue !== undefined ? jpyValue : parseFloat(document.getElementById('calc-display').innerText || 0);
+      const twd = Math.round(jpy * exchangeRate);
+      document.getElementById('calc-twd').innerText = `≈ NT$ ${twd.toLocaleString()}`;
+    }
+
+    // 圖片壓縮並轉 Base64 Canvas
+    function handlePhotoUpload(input) {
+      const file = input.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const maxDim = 300; // 限制長寬最大 300px 節省容量
+          let width = img.width;
+          let height = img.height;
+
+          if (width > height) {
+            if (width > maxDim) {
+              height *= maxDim / width;
+              width = maxDim;
+            }
+          } else {
+            if (height > maxDim) {
+              width *= maxDim / height;
+              height = maxDim;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          uploadedBase64Photo = canvas.toDataURL('image/jpeg', 0.6); // 壓縮品質 0.6
+          document.getElementById('photo-label').innerText = "已選取照片 ✓";
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function addExpense() {
+      const title = document.getElementById('expense-title').value.trim();
+      const amount = parseFloat(document.getElementById('expense-amount').value);
+
+      if (!title || isNaN(amount) || amount <= 0) {
+        alert("請輸入有效的品項名稱與日幣金額！");
+        return;
+      }
+
+      const expenses = JSON.parse(localStorage.getItem('eevee_expenses') || "[]");
+      expenses.unshift({
+        id: Date.now(),
+        title,
+        amount,
+        photo: uploadedBase64Photo
+      });
+
+      localStorage.setItem('eevee_expenses', JSON.stringify(expenses));
+      
+      // 清空輸入
+      document.getElementById('expense-title').value = "";
+      document.getElementById('expense-amount').value = "";
+      document.getElementById('expense-photo').value = "";
+      document.getElementById('photo-label').innerText = "上傳收據/照片";
+      uploadedBase64Photo = "";
+
+      renderExpenses();
+    }
+
+    function renderExpenses() {
+      const container = document.getElementById('expense-list');
+      const expenses = JSON.parse(localStorage.getItem('eevee_expenses') || "[]");
+
+      let totalJPY = 0;
+
+      if (expenses.length === 0) {
+        container.innerHTML = `<p class="text-xs text-gray-400 text-center py-2">尚無記帳紀錄</p>`;
+      } else {
+        container.innerHTML = expenses.map(item => {
+          totalJPY += item.amount;
+          const twd = Math.round(item.amount * exchangeRate);
+          return `
+            <div class="flex items-center justify-between p-2 bg-amber-50/60 rounded-xl border border-amber-200 text-xs">
+              <div class="flex items-center gap-2">
+                ${item.photo ? `<img src="${item.photo}" class="w-10 h-10 object-cover rounded-lg border border-amber-300">` : `<div class="w-10 h-10 bg-amber-200 rounded-lg flex items-center justify-center text-eevee-brown font-bold"><i class="fa-solid fa-bag-shopping"></i></div>`}
+                <div>
+                  <p class="font-bold text-eevee-dark">${item.title}</p>
+                  <p class="text-[10px] text-gray-500">NT$ ${twd.toLocaleString()}</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="font-black text-eevee-brown">¥ ${item.amount.toLocaleString()}</span>
+                <button onclick="deleteExpense(${item.id})" class="text-red-400 hover:text-red-600 p-1"><i class="fa-solid fa-trash-can"></i></button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      const totalTWD = Math.round(totalJPY * exchangeRate);
+      document.getElementById('total-expense').innerText = `總計: ¥${totalJPY.toLocaleString()} (NT$ ${totalTWD.toLocaleString()})`;
+    }
+
+    function deleteExpense(id) {
+      let expenses = JSON.parse(localStorage.getItem('eevee_expenses') || "[]");
+      expenses = expenses.filter(e => e.id !== id);
+      localStorage.setItem('eevee_expenses', JSON.stringify(expenses));
+      renderExpenses();
+    }
+
+    // ==================== LISTS 清單 & 備忘錄 ====================
+    function initLists() {
+      renderChecklist();
+      renderMemos();
+    }
+
+    function renderChecklist() {
+      const saved = JSON.parse(localStorage.getItem('eevee_checklist'));
+      const items = saved || defaultChecklist;
+
+      const container = document.getElementById('checklist-container');
+      container.innerHTML = items.map((item, idx) => `
+        <label class="flex items-center space-x-2 p-2 bg-white/80 rounded-lg border border-amber-200 cursor-pointer">
+          <input type="checkbox" ${item.checked ? 'checked' : ''} onchange="toggleChecklist(${idx})" class="w-4 h-4 text-eevee-brown rounded border-amber-300 focus:ring-eevee-brown">
+          <span class="${item.checked ? 'line-through text-gray-400' : 'text-gray-800'} font-medium">${item.text}</span>
+        </label>
+      `).join('');
+
+      if (!saved) {
+        localStorage.setItem('eevee_checklist', JSON.stringify(defaultChecklist));
+      }
+    }
+
+    function toggleChecklist(index) {
+      const items = JSON.parse(localStorage.getItem('eevee_checklist'));
+      items[index].checked = !items[index].checked;
+      localStorage.setItem('eevee_checklist', JSON.stringify(items));
+      renderChecklist();
+    }
+
+    function addMemo() {
+      const input = document.getElementById('memo-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const memos = JSON.parse(localStorage.getItem('eevee_memos') || "[]");
+      memos.unshift({ id: Date.now(), text });
+      localStorage.setItem('eevee_memos', JSON.stringify(memos));
+
+      input.value = "";
+      renderMemos();
+    }
+
+    function renderMemos() {
+      const memos = JSON.parse(localStorage.getItem('eevee_memos') || "[]");
+      const container = document.getElementById('memo-container');
+
+      if (memos.length === 0) {
+        container.innerHTML = `<p class="text-xs text-gray-400 text-center py-2">尚無自訂備忘錄</p>`;
+        return;
+      }
+
+      const urlRegex = /(https?:\/\/[^\s]+)/g;
+
+      container.innerHTML = memos.map(m => {
+        const isUrl = urlRegex.test(m.text);
+        let contentHTML = `<p class="text-xs text-gray-800 break-all font-medium">${m.text}</p>`;
+
+        if (isUrl) {
+          contentHTML = `
+            <a href="${m.text}" target="_blank" class="inline-flex items-center gap-1 bg-blue-50 text-blue-600 px-3 py-1.5 rounded-lg text-xs font-bold border border-blue-200 underline break-all">
+              <i class="fa-solid fa-link"></i> ${m.text}
+            </a>
+          `;
+        }
+
+        return `
+          <div class="flex items-center justify-between p-2.5 bg-white rounded-xl border border-amber-200">
+            ${contentHTML}
+            <button onclick="deleteMemo(${m.id})" class="text-red-400 hover:text-red-600 ml-2"><i class="fa-solid fa-trash-can"></i></button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function deleteMemo(id) {
+      let memos = JSON.parse(localStorage.getItem('eevee_memos') || "[]");
+      memos = memos.filter(m => m.id !== id);
+      localStorage.setItem('eevee_memos', JSON.stringify(memos));
+      renderMemos();
+    }
+  </script>
+</body>
+</html>
